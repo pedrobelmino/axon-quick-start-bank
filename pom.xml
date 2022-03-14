@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.axoniq.labs</groupId>
+    <groupId>br.com.pedrobelmino.axon.labs</groupId>
     <artifactId>chat-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -20,8 +20,8 @@
     </parent>
 
     <modules>
-        <module>chat-getting-started</module>
-        <module>chat-scaling-out</module>
+        <module>chat-query</module>
+        <module>chat-command</module>
     </modules>
 
     <properties>
