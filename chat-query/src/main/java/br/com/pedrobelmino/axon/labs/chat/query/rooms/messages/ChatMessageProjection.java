@@ -27,4 +27,12 @@ public class ChatMessageProjection {
         return repository.findAllByRoomIdOrderByTimestamp(query.getRoomId());
     }
 
+    @EventHandler
+    public void on(MessagePostedEvent event, @Timestamp Instant timestamp) {
+        ChatMessage chatMessage = new ChatMessage(event.getParticipant(),
+                event.getRoomId(),
+                event.getMessage(),
+                timestamp.toEpochMilli());
+        repository.save(chatMessage);
+    }
 }

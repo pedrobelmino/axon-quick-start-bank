@@ -20,6 +20,13 @@ public class RoomParticipantsProjection {
         this.repository = repository;
     }
 
+    @QueryHandler
+    public List<String> handle(RoomParticipantsQuery query) {
+        return repository.findRoomParticipantsByRoomId(query.getRoomId())
+                .stream()
+                .map(RoomParticipant::getParticipant).sorted().collect(toList());
+    }
+
     @EventHandler
     public void on(ParticipantJoinedRoomEvent event) {
         repository.save(new RoomParticipant(event.getRoomId(), event.getParticipant()));

@@ -19,6 +19,21 @@ public class RoomSummaryProjection {
         this.roomSummaryRepository = roomSummaryRepository;
     }
 
+    @EventHandler
+    public void on(RoomCreatedEvent event) throws Exception  {
+        roomSummaryRepository.save(new RoomSummary(event.getRoomId(), event.getName()));
+    }
+
+    @EventHandler
+    public void on(ParticipantJoinedRoomEvent event) {
+        roomSummaryRepository.getOne(event.getRoomId()).addParticipant();
+    }
+
+    @EventHandler
+    public void on(ParticipantLeftRoomEvent event) {
+        roomSummaryRepository.getOne(event.getRoomId()).removeParticipant();
+    }
+
     @QueryHandler
     public List<RoomSummary> handle(AllRoomsQuery query) {
         return roomSummaryRepository.findAll();

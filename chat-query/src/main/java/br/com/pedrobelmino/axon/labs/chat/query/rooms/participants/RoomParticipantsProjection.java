@@ -23,8 +23,17 @@ public class RoomParticipantsProjection {
     @QueryHandler
     public List<String> handle(RoomParticipantsQuery query) {
         return repository.findRoomParticipantsByRoomId(query.getRoomId())
-                         .stream()
-                         .map(RoomParticipant::getParticipant).sorted().collect(toList());
+                .stream()
+                .map(RoomParticipant::getParticipant).sorted().collect(toList());
     }
 
+    @EventHandler
+    public void on(ParticipantJoinedRoomEvent event) {
+        repository.save(new RoomParticipant(event.getRoomId(), event.getParticipant()));
+    }
+
+    @EventHandler
+    public void on(ParticipantLeftRoomEvent event) {
+        repository.deleteByParticipantAndRoomId(event.getParticipant(), event.getRoomId());
+    }
 }
