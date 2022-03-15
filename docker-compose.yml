@@ -1,10 +1,37 @@
 version: '3.3'
 services:
-  db:
+  chat-command:
+    build: chat-command
+    ports:
+      - "8081:8081"
+    expose:
+      - '8081'
+    environment:
+      POSTGRES_HOST: pgserver
+      AXON_HOST: axonserver
+    networks:
+      - web
+      - db-postgres
+      - axon
+  chat-query:
+    build: chat-query
+    ports:
+      - "8080:8080"
+    expose:
+      - '8080'
+    environment:
+      MYSQL_HOST: msserver
+      AXON_HOST: axonserver
+    networks:
+      - web
+      - db-mysql
+      - axon
+  msserver:
     image: mysql:5.7
+    hostname: msserver
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
+      MYSQL_DATABASE: 'db-slave'
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: '1234qwer'
       MYSQL_ROOT_PASSWORD: '1234qwer'
@@ -13,7 +40,25 @@ services:
     expose:
       - '3306'
     volumes:
-      - db:/var/lib/mysql
+      - db-mysql:/var/lib/mysql
+    networks:
+      - db-mysql
+
+  pgserver:
+    image: postgres
+    hostname: pgserver
+    environment:
+      POSTGRES_PASSWORD: "1234qwer"
+    ports:
+      - "15432:5432"
+    expose:
+      - '15432'
+    volumes:
+      - db-postgres:/var/lib/postgresql/data
+    networks:
+      - db-postgres
+
+
   axonserver:
     image: axoniq/axonserver
     hostname: axonserver
@@ -29,11 +74,14 @@ services:
       - axon
 
 volumes:
-  db:
+  db-mysql:
+  db-postgres:
   axonserver-data:
   axonserver-events:
   axonserver-config:
 
 networks:
   axon:
-  db:
+  db-mysql:
+  db-postgres:
+  web:
