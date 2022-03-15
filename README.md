@@ -29,7 +29,7 @@ docker-compose up --build --force-recreate --remove-orphans chat-command chat-qu
 ```
 **Testes - Importe o arquivo postman_collection.json com o PostMan**
 
-**Referência**
+**Referências**
 - https://docs.axoniq.io/reference-guide/v/3.1/part-i-getting-started/quick-start
 - https://github.com/AxonIQ/axon-quick-start
 
