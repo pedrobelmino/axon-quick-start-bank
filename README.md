@@ -1,22 +1,38 @@
-Axon Labs - Chat Application
+LAB Para geração de Microserviços Utilizando Axon - CQRS + Event Sourcing + Saga + DDD
 ============================
 
-This project contains the source code for the Axon Labs. It contains two modules:
+Pré-requisitos
+```bash
+Java 8
+Maven 3.6
+Docker
+Docker-compose
+```
+Módulos
+- chat-command
+- chat-query
 
-- *chat-getting-started*:  
-  Use this module if you want to get a feel of how Axon works. The project contains a minimal 
-  setup. You will need to implement the Command Model, the Event Handlers and the Query Handlers,
-  and connect the public API to the command bus and the query bus.
-  
-  Want to do this lab? Visit [getting started exercises](chat-getting-started/README.md).
-  
-- *chat-scaling-out*:  
-  Use this module if you want to take on a more advanced challenge. The project contains a fully 
-  operational chat application. It's your task to change the configuration to distribute commands
-  and events across multiple instances of the application.
-  
-  Want to do this lab? Visit [scaling out exercises](chat-scaling-out/README.md).
-  
+Execução - Geração dos jars.
+```bash
+mvn clean install -DskipTests
+```
+Execução - Remoção de containers existentes
+```bash
+docker-compose down -v
+```
+Execução - Execução dos containers de Database e EventStore
+```bash
+docker-compose up --build --force-recreate --remove-orphans axonserver sqlserver mysqlserver
+```
+Execução - Execução dos containers Web - SpringBoot Command e SpringBoot Query 
+```bash
+docker-compose up --build --force-recreate --remove-orphans chat-command chat-query
+```
+Testes - Abra o arquivo postman_collection.json com o PostMan
 
-If you have any questions, don't hesitate to ask your Lab coordinator for guidance.
+Referência
+- https://docs.axoniq.io/reference-guide/v/3.1/part-i-getting-started/quick-start
+- https://github.com/AxonIQ/axon-quick-start
+
+Seja feliz!
 
