@@ -23,11 +23,6 @@ public class ChatMessageProjection {
         this.updateEmitter = updateEmitter;
     }
 
-    @QueryHandler
-    public List<ChatMessage> handle(RoomMessagesQuery query) {
-        return repository.findAllByRoomIdOrderByTimestamp(query.getRoomId());
-    }
-
     @EventHandler
     public void on(MessagePostedEvent event, @Timestamp Instant timestamp) {
         ChatMessage chatMessage = new ChatMessage(event.getParticipant(),
