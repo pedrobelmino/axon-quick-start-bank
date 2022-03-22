@@ -8,8 +8,8 @@ LAB para geração de Microserviços Utilizando Axon - CQRS + Event Sourcing + S
 - Docker-compose
 
 **Módulos**
-- chat-command
-- chat-query
+- bank-command
+- bank-query
 
 **Execução - Geração dos jars.**
 ```bash

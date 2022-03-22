@@ -45,6 +45,21 @@ services:
     networks:
       - db-mysql
 
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=1234!QweR
+    ports:
+      - "1433:1433"
+    expose:
+      - "1433"
+#    volumes:
+#      - db-sqlserver:/var/opt/mssql/data
+    networks:
+      - db-sqlserver
+
+
   axonserver:
     image: axoniq/axonserver
     hostname: axonserver
@@ -61,6 +76,7 @@ services:
 
 volumes:
   db-mysql:
+  db-sqlserver:
   axonserver-data:
   axonserver-events:
   axonserver-config:
@@ -68,4 +84,5 @@ volumes:
 networks:
   axon:
   db-mysql:
+  db-sqlserver:
   web:
