@@ -1,7 +1,7 @@
 version: '3.3'
 services:
-  chat-command:
-    build: chat-command
+  bank-command:
+    build: bank-command
     ports:
       - "8081:8081"
     expose:
@@ -13,8 +13,8 @@ services:
       - web
       - db-sqlserver
       - axon
-  chat-query:
-    build: chat-query
+  bank-query:
+    build: bank-query
     ports:
       - "8080:8080"
     expose:
@@ -45,21 +45,6 @@ services:
     networks:
       - db-mysql
 
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=1234!QweR
-    ports:
-      - "1433:1433"
-    expose:
-      - "1433"
-#    volumes:
-#      - db-sqlserver:/var/opt/mssql/data
-    networks:
-      - db-sqlserver
-
-
   axonserver:
     image: axoniq/axonserver
     hostname: axonserver
@@ -76,7 +61,6 @@ services:
 
 volumes:
   db-mysql:
-  db-sqlserver:
   axonserver-data:
   axonserver-events:
   axonserver-config:
@@ -84,5 +68,4 @@ volumes:
 networks:
   axon:
   db-mysql:
-  db-sqlserver:
   web:

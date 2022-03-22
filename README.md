@@ -25,7 +25,7 @@ docker-compose up --build --force-recreate --remove-orphans axonserver sqlserver
 ```
 **Execução - Execução dos containers Web - SpringBoot Command e SpringBoot Query** 
 ```bash
-docker-compose up --build --force-recreate --remove-orphans chat-command chat-query
+docker-compose up --build --force-recreate --remove-orphans bank-command bank-query
 ```
 **Testes - Importe o arquivo postman_collection.json com o PostMan**
 
