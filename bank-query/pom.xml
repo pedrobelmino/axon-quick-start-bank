@@ -21,7 +21,7 @@
     <packaging>jar</packaging>
 
     <name>bank-query</name>
-    <description>AxonIQ Getting Started - Chat application</description>
+    <description>AxonIQ Getting Started - Fork Bank application</description>
 
     <parent>
         <groupId>br.com.pedrobelmino.axon.labs</groupId>

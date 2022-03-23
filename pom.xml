@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <name>bank</name>
-    <description>AxonIQ Getting Started - Chat application</description>
+    <description>AxonIQ Getting Started - Bank application</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
