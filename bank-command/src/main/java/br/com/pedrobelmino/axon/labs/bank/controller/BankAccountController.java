@@ -1,8 +1,9 @@
 package br.com.pedrobelmino.axon.labs.bank.controller;
 
 import br.com.pedrobelmino.axon.labs.bank.command.AddBankAccountCommand;
+import br.com.pedrobelmino.axon.labs.bank.command.DebitAccountCommand;
 import br.com.pedrobelmino.axon.labs.bank.command.RemoveBankAccountCommand;
-import br.com.pedrobelmino.axon.labs.bank.command.UpdateBalanceBankAccountCommand;
+import br.com.pedrobelmino.axon.labs.bank.command.CreditAccountCommand;
 import br.com.pedrobelmino.axon.labs.bank.dto.BankAccountDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +29,16 @@ public class BankAccountController {
         return commandGateway.send(command);
     }
 
-    @PutMapping("/{id}/balances")
-    public CompletableFuture<String> updateBalance(@PathVariable String id, @RequestBody BankAccountDTO dto) {
-        UpdateBalanceBankAccountCommand command = new UpdateBalanceBankAccountCommand(id, dto.getBalance());
+    @PutMapping("/{id}/credit")
+    public CompletableFuture<String> credit(@PathVariable String id, @RequestBody BankAccountDTO dto) {
+        CreditAccountCommand command = new CreditAccountCommand(id, dto.getValue());
+        log.info("Executing command: {}", command);
+        return commandGateway.send(command);
+    }
+
+    @PutMapping("/{id}/debit")
+    public CompletableFuture<String> debit(@PathVariable String id, @RequestBody BankAccountDTO dto) {
+        DebitAccountCommand command = new DebitAccountCommand(id, dto.getValue());
         log.info("Executing command: {}", command);
         return commandGateway.send(command);
     }

@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 @Getter
 @ToString
 @AllArgsConstructor
-public class UpdateBalanceBankAccountCommand {
+public class DebitAccountCommand {
 
     @TargetAggregateIdentifier
     private String bankId;
-    private BigDecimal balance;
+    private BigDecimal value;
 }

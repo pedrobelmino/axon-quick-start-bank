@@ -1,10 +1,11 @@
 package br.com.pedrobelmino.axon.labs.bank.aggregate;
 
 import br.com.pedrobelmino.axon.labs.bank.command.AddBankAccountCommand;
+import br.com.pedrobelmino.axon.labs.bank.command.DebitAccountCommand;
 import br.com.pedrobelmino.axon.labs.bank.command.RemoveBankAccountCommand;
-import br.com.pedrobelmino.axon.labs.bank.command.UpdateBalanceBankAccountCommand;
+import br.com.pedrobelmino.axon.labs.bank.command.CreditAccountCommand;
 import br.com.pedrobelmino.axon.labs.bank.event.BankAccountAddedEvent;
-import br.com.pedrobelmino.axon.labs.bank.event.BankAccountBalanceUpdatedEvent;
+import br.com.pedrobelmino.axon.labs.bank.event.BalanceAccountUpdateEvent;
 import br.com.pedrobelmino.axon.labs.bank.event.BankAccountRemovedEvent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class BankAccountAggregate {
     private String id;
     private String name;
     private BigDecimal balance;
+    private BigDecimal value;
 
     @CommandHandler
     public BankAccountAggregate(AddBankAccountCommand cmd) {
@@ -42,11 +44,23 @@ public class BankAccountAggregate {
     }
 
     @CommandHandler
-    public void handle(UpdateBalanceBankAccountCommand cmd) {
+    public void handle(CreditAccountCommand cmd) {
         log.info("Handling {} command: {}", cmd.getClass().getSimpleName(), cmd);
         Assert.hasLength(cmd.getBankId(), "Bank Id should not be empty or null.");
-        Assert.notNull(cmd.getBalance(), "Balance should not be empty or null.");
-        apply(new BankAccountBalanceUpdatedEvent(cmd.getBankId(), cmd.getBalance()));
+        Assert.notNull(cmd.getValue(), "Value should not be empty or null.");
+        BigDecimal newBalance = balance.add(cmd.getValue());
+        apply(new BalanceAccountUpdateEvent(cmd.getBankId(), newBalance, cmd.getValue()));
+        log.info("Done handling {} command: {}", cmd.getClass().getSimpleName(), cmd);
+    }
+
+    @CommandHandler
+    public void handle(DebitAccountCommand cmd) {
+        log.info("Handling {} command: {}", cmd.getClass().getSimpleName(), cmd);
+        Assert.hasLength(cmd.getBankId(), "Bank Id should not be empty or null.");
+        Assert.notNull(cmd.getValue(), "Value should not be empty or null.");
+        BigDecimal newBalance = balance.subtract(cmd.getValue());
+        Assert.isTrue(newBalance.compareTo(BigDecimal.ZERO)>0, "Saldo insuficiente");
+        apply(new BalanceAccountUpdateEvent(cmd.getBankId(), newBalance, cmd.getValue().multiply(BigDecimal.valueOf(-1l))));
         log.info("Done handling {} command: {}", cmd.getClass().getSimpleName(), cmd);
     }
 
@@ -68,9 +82,10 @@ public class BankAccountAggregate {
     }
 
     @EventSourcingHandler
-    public void on(BankAccountBalanceUpdatedEvent event) {
+    public void on(BalanceAccountUpdateEvent event) {
         log.info("Handling {} event: {}", event.getClass().getSimpleName(), event);
         this.balance = event.getBalance();
+        this.value = event.getValue();
         log.info("Done handling {} event: {}", event.getClass().getSimpleName(), event);
     }
 

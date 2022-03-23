@@ -1,7 +1,7 @@
 package br.com.pedrobelmino.axon.labs.bank.components;
 
 import br.com.pedrobelmino.axon.labs.bank.event.BankAccountAddedEvent;
-import br.com.pedrobelmino.axon.labs.bank.event.BankAccountBalanceUpdatedEvent;
+import br.com.pedrobelmino.axon.labs.bank.event.BalanceAccountUpdateEvent;
 import br.com.pedrobelmino.axon.labs.bank.event.BankAccountRemovedEvent;
 import br.com.pedrobelmino.axon.labs.bank.exception.BankAccountNotFoundException;
 import br.com.pedrobelmino.axon.labs.bank.model.BankAccount;
@@ -25,7 +25,7 @@ public class BankAccountEventProcessor {
     }
 
     @EventHandler
-    public void on(BankAccountBalanceUpdatedEvent event) {
+    public void on(BalanceAccountUpdateEvent event) {
         BankAccount bank = repository.findById(event.getBankId())
                 .orElseThrow(BankAccountNotFoundException::new);
         bank.setBalance(event.getBalance());
